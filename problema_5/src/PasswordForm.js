@@ -16,7 +16,7 @@ const PasswordForm = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
-    const isSecurePassword = () => {
+    const esContrasenaSegura = () => {
         // Requerimientos de la contraseña
         const longitudMinima = 16;
         const caracteresEspeciales = ['!', '@', '#', '$', '%', 'ˆ', '&', '*', '-', '_', '+', '=', '?'];
@@ -78,7 +78,7 @@ const PasswordForm = () => {
     };
 
     const handleFormSubmit = () => {
-        if (isSecurePassword()) {
+        if (esContrasenaSegura()) {
             // Contraseña segura, mostrar SweetAlert de éxito
             Swal.fire(
                 'Contraseña segura!',
