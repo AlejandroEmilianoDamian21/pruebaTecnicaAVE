@@ -7,10 +7,16 @@ const obtenerNumeroPorNombre = require('./middleware/obtenerNumeroPorNombre');
 const obtenerStatsPorNumero = require('./middleware/obtenerStatsPorNumero');
 const obtenerPokemonesOrdenadosPorIndicador = require('./middleware/obtenerPokemonesOrdenadosPorIndicador');
 const tieneTipo = require('./middleware/tieneTipo');
+const obtenerPokemonPorNumeroONombre = require('./middleware/obtenerPokemon');
+const cors = require('cors'); 
 
 
+const port = 8080
 
-const apiRouter = express.Router(); 
+const apiRouter = express.Router();
+
+app.use(cors());
+
 
 
 /**
@@ -61,6 +67,9 @@ apiRouter.get('/obtenerPokemonesOrdenadosPorIndicador', obtenerPokemonesOrdenado
  */
 apiRouter.get('/tieneTipo', tieneTipo);
 
+apiRouter.get('/obtenerPokemon', obtenerPokemonPorNumeroONombre);
+
+
 /*
 *El enrutador de la API bajo '/api'
 */
@@ -71,6 +80,6 @@ app.use('/api', apiRouter);
 app.use((req, res, next) => {
     res.status(404).json({ error: 'Ruta no encontrada' });
 });
-app.listen(3000, () => {
-    console.log('Servidor en escuchando en el puerto 3000');
+app.listen(port, () => {
+    console.log('Servidor en escuchando en el puerto 8080');
 });

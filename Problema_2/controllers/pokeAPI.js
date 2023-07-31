@@ -80,6 +80,26 @@ async function tieneTipo(numero, tipo) {
     throw new Error(`No se pudo verificar si el pokémon con número '${numero}' posee el tipo '${tipo}'.`);
   }
 }
+async function obtenerPokemon(numeroONombre) {
+  try {
+    numeroONombre = numeroONombre.toLowerCase();
+    const response = await axios.get(`${baseURL}/pokemon/${numeroONombre}`);
+    const { name, id, types, weight, height, sprites } = response.data;
+    const tipo = types.map((type) => type.type.name);
+
+    return {
+      nombre: name,
+      numero: id,
+      tipo,
+      peso: weight,
+      altura: height,
+      imagen: sprites.other.dream_world.front_default,
+    };
+  } catch (error) {
+    throw new Error(`No se pudo obtener los datos del pokémon con número o nombre '${numeroONombre}'.`);
+  }
+}
+
 
 
 module.exports = {
@@ -89,4 +109,5 @@ module.exports = {
     obtenerStatsPorNumero,
     obtenerPokemonesOrdenadosPorIndicador,
     tieneTipo,
+    obtenerPokemon
   };
