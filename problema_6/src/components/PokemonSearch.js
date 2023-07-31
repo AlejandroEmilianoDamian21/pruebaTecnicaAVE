@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { TextField, Button, Typography } from '@mui/material';
 import './pokemonSearch.css';
+import Swal from 'sweetalert2';
+
 
 const PokemonSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,10 +18,18 @@ const PokemonSearch = () => {
     try {
       setError(null);
       const response = await axios.get(`http://localhost:8080/api/obtenerPokemon?numeroONombre=${searchTerm}`);
-      console.log(response.data); // Agrega esta línea para verificar los datos obtenidos
+      // console.log(response.data); // Agregar esta línea para verificar los datos obtenidos
       setPokemonData(response.data);
     } catch (error) {
-      setError('No se encontró ningún Pokémon con ese nombre o número.');
+      setError( () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'El pokemon que buscas no existe!'
+        })  
+      }
+
+      );
       setPokemonData(null);
     }
   };
@@ -33,7 +43,7 @@ const PokemonSearch = () => {
       <div className="search-form-container">
         <div className='card-container-search'> 
         <Typography variant="h4" gutterBottom>
-          Pokémon Search
+          Busca Pokémon
         </Typography>
         <TextField
           label="Buscar por nombre o número"
@@ -52,6 +62,8 @@ const PokemonSearch = () => {
       <div className="pokemon-info"></div>
       {pokemonData && (
         <div className="card-container-pokemon">
+          <div className="card-image-logo">
+            </div>
           <div className="pokemon-info-name">
             <Typography gutterBottom> {capitalizeFirstLetter(pokemonData.nombre)} </Typography>
             </div>
@@ -65,19 +77,19 @@ const PokemonSearch = () => {
           <table className="pokemon-info-table">
             <tbody>
               <tr>
-                <td>Número:</td>
+                <td>Pokemon N°</td>
                 <td>{pokemonData.numero}</td>
               </tr>
               <tr>
-                  <td>Tipo:</td>
+                  <td>Tipo</td>
                   <td>{pokemonData.tipo.map((type) => capitalizeFirstLetter(type)).join(', ')}</td>
                 </tr>
               <tr>
-                <td>Peso:</td>
+                <td>Peso</td>
                 <td>{pokemonData.peso}</td>
               </tr>
               <tr>
-                <td>Altura:</td>
+                <td>Altura</td>
                 <td>{pokemonData.altura}</td>
               </tr>
             </tbody>
